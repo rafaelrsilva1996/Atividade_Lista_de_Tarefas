@@ -44,5 +44,5 @@ Abra outro terminal e execute os seguintes comandos para exibir a tela:
 xhost + "local:docker@"
 ```
 ```sh
-docker run --rm -ti --net=host -e DISPLAY=$DISPLAY atividade_lista_de_tarefas_app
+sudo docker run --rm -ti --net=host -e DISPLAY=$DISPLAY atividade_lista_de_tarefas_app
 ```
