@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  app:
+    build: ./app
+    tty: true
+    stdin_open: true
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app/src
+  postgres:
+    image: postgres
+    hostname: postgres
+    ports:
+      - "5432:5432"
+    restart: always
+    environment: 
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    volumes:
+      - ./sql/:/docker-entrypoint-initdb.d/
