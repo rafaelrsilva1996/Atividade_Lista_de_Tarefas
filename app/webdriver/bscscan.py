@@ -39,3 +39,4 @@ def get_token_list_per_wallet(wallet_address):
 if __name__ == "__main__":
     
     print(get_token_list_per_wallet('0x29a97c6effb8a411dabc6adeefaa84f5067c8bbe'))
+    # 0x7d3d35878a8d6732a0abc296f0c57426c5a7d75e

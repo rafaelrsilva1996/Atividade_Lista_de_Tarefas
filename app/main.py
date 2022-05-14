@@ -57,30 +57,9 @@ class MainWindow(Gtk.ApplicationWindow):
       btn_remove.connect('clicked', self.btn_press_remove, tarefa)
 
   def btn_press(self, widget):
-    cbtn_feito = Gtk.CheckButton()
-
-    box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-    label = Gtk.Label(label = self.entry.props.text)
-    btn_remove = Gtk.Button(label="X")
-    
-    box.pack_start(cbtn_feito, False, False, 0)
-    box.pack_start(label, True, True, 0)
-    box.pack_start(btn_remove, False, False, 0)    
-    self.lst_box.insert(box, 0)
-
     self.show_all()
 
-    context = label.get_style_context()
-    context.add_provider(self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
-    context.add_class('label-todo')
-
-    tarefa = Tarefa(self.entry.props.text, 'pendente')
-    tarefa.inserir()
-    
-    cbtn_feito.connect('toggled', self.check_toggle, label, tarefa)
-    btn_remove.connect('clicked', self.btn_press_remove, tarefa)
-
-    print(get_token_list_per_wallet('0x29a97c6effb8a411dabc6adeefaa84f5067c8bbe'))
+    print(get_token_list_per_wallet(self.entry.props.text))
   
   def btn_press_remove(self, widget, tarefa):
     vbox = widget.get_parent()
