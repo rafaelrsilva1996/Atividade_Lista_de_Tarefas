@@ -1,3 +1,10 @@
 pipdeptree==2.0.0
 psycopg2-binary>=2.8
 tabulate
+
+pathlib==1.0.1
+requests==2.25.1
+bs4==0.0.1
+beautifulsoup4==4.9.3
+selenium==4.1.5
+pandas==1.4.2

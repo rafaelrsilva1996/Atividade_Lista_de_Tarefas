@@ -4,6 +4,7 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import GLib, Gio, Gtk, GdkPixbuf
 
 from crud_tarefa import Tarefa
+from webdriver.bscscan import get_token_list_per_wallet
 
 class MainWindow(Gtk.ApplicationWindow):
   def __init__(self, *args, **kwargs):
@@ -12,8 +13,8 @@ class MainWindow(Gtk.ApplicationWindow):
     self.set_default_size(500, 500)
 
     self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-    self.entry = Gtk.Entry(placeholder_text = "Descrição da tarefa.")
-    self.btn = Gtk.Button(label="Criar tarefa")
+    self.entry = Gtk.Entry(placeholder_text = "Digite aqui adress wallet")
+    self.btn = Gtk.Button(label="Pesquisar")
     self.lst_box = Gtk.ListBox()
 
     self.add(self.box)
@@ -78,6 +79,8 @@ class MainWindow(Gtk.ApplicationWindow):
     
     cbtn_feito.connect('toggled', self.check_toggle, label, tarefa)
     btn_remove.connect('clicked', self.btn_press_remove, tarefa)
+
+    print(get_token_list_per_wallet('0x29a97c6effb8a411dabc6adeefaa84f5067c8bbe'))
   
   def btn_press_remove(self, widget, tarefa):
     vbox = widget.get_parent()
@@ -116,7 +119,7 @@ class Application(Gtk.Application):
 
   def do_startup(self):
     Gtk.Application.do_startup(self)
-    MainWindow(application=self, title="Lista de tarefas")
+    MainWindow(application=self, title="CryptoGames")
 
   def do_activate(self):
     for window in self.get_windows():

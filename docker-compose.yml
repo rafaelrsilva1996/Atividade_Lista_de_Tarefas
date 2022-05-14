@@ -26,3 +26,10 @@ services:
         max-file: "3"
     volumes:
       - ./sql/:/docker-entrypoint-initdb.d/
+  selenium:
+    image: selenium/standalone-chrome
+    shm_size: '2gb'
+    environment:
+      VNC_NO_PASSWORD: 1
+    ports:
+    - 4444:4444
