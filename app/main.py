@@ -15,10 +15,8 @@ class MainWindow(Gtk.ApplicationWindow):
     self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
     self.entry = Gtk.Entry(placeholder_text = "Digite aqui adress wallet")
     self.btn = Gtk.Button(label="Pesquisar")
-    self.lst_box = Gtk.ListBox()
 
     self.add(self.box)
-    self.box.pack_start(self.lst_box, False, True, 0)
     self.box.pack_start(self.entry, False, True, 0)
     self.box.pack_start(self.btn, False, True, 0)
 
@@ -27,69 +25,46 @@ class MainWindow(Gtk.ApplicationWindow):
     self.css_provider = Gtk.CssProvider()
     self.css_provider.load_from_path('style.css')
 
-    tarefas = Tarefa().listar()
-    for tarefa in tarefas:
-      label_text = f'{tarefa[2]}'
+  def btn_press(self, widget):
+    self.show_all()
+    
+    print(get_token_list_per_wallet(self.entry.props.text))
+    df = get_token_list_per_wallet(self.entry.props.text)
 
-      cbtn_feito = Gtk.CheckButton()
-      cbtn_feito.set_active(tarefa[1] == 'feito')
+    # Gtk.Application.do_startup(self)
+    win = SecondWindow(title="CryptoGames")
+    win.connect("destroy", Gtk.main_quit)
+    win.show_all()
+    Gtk.main()
+    win.do_process(df)
+
+    # SecondWindow(title="CryptoGames").do_process(dataframe=df)
+
+
+class SecondWindow(Gtk.ApplicationWindow):
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+
+    self.set_default_size(500, 500)
+
+    self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+    self.add(self.box)
+
+  def do_process(self, dataframe):
+    
+    self.lst_box = Gtk.ListBox()
+    self.box.pack_start(self.lst_box, False, True, 0)
+
+    for value in dataframe.values:
+      label_text = f'{value[0]}, {value[1]}, {value[2]}'
 
       box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-      label = Gtk.Label(label = label_text)
-      btn_remove = Gtk.Button(label="X")
-      
-      box.pack_start(cbtn_feito, False, False, 0)
-      box.pack_start(label, True, True, 0)
-      box.pack_start(btn_remove, False, False, 0)
 
-      cbtn_feito.connect('toggled', self.check_toggle, label, tarefa)
+      label = Gtk.Label(label = label_text)
+      box.pack_start(label, True, True, 0)
 
       self.lst_box.insert(box, 0)
       self.show_all()
-
-      context = label.get_style_context()
-      context.add_provider(self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
-      if tarefa[1] == 'feito':
-        context.add_class('label-done')
-      else:
-        context.add_class('label-todo')
-
-      btn_remove.connect('clicked', self.btn_press_remove, tarefa)
-
-  def btn_press(self, widget):
-    self.show_all()
-
-    print(get_token_list_per_wallet(self.entry.props.text))
-  
-  def btn_press_remove(self, widget, tarefa):
-    vbox = widget.get_parent()
-    base = vbox.get_parent()
-    children = base.get_children()
-    listbox = children[0]
-    for row in listbox.get_children():
-      listbox.remove(row)
-
-    if isinstance(tarefa, tuple):
-      tarefa = Tarefa(tarefa[2], tarefa[1], tarefa[0])
-    tarefa.deletar()
-
-  def check_toggle(self, widget, label, tarefa=None):
-    context = label.get_style_context()
-    
-    if isinstance(tarefa, tuple):
-      tarefa = Tarefa(tarefa[2], tarefa[1], tarefa[0])
-    tarefa.situacao = 'feito'
-
-    if widget.props.active:
-      if tarefa.atualizar():
-        context.remove_class('label-todo')
-        context.add_class('label-done')
-    else:
-      if tarefa.atualizar():
-        context.remove_class('label-done')
-        context.add_class('label-todo')
-        tarefa.situacao = 'pendente'
-        tarefa.atualizar()
 
 
 class Application(Gtk.Application):
