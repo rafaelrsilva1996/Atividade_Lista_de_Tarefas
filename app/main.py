@@ -60,11 +60,15 @@ class MainWindow(Gtk.ApplicationWindow):
     win.set_default_size(800, 600)
     win.connect("destroy", Gtk.main_quit)
     
+    box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
-    label = Gtk.Label(label = adress_wallet)
-    # self.box.pack_start(self.label, True, True, 0)
+    label_adress_wallet = Gtk.Label(label = adress_wallet)
+    label_dataframe = Gtk.Label(label = str(dataframe))
 
-    win.add(label)
+    box.pack_start(label_adress_wallet, True, True, 0)
+    box.pack_start(label_dataframe, True, True, 0)
+
+    win.add(box)
 
     win.show_all()
     Gtk.main()
