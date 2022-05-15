@@ -29,40 +29,19 @@ class MainWindow(Gtk.ApplicationWindow):
     self.show_all()
 
     adress_wallet = self.entry.props.text
-    adress_wallet = '0x7d3d35878a8d6732a0abc296f0c57426c5a7d75e'
     
-    print(get_token_list_per_wallet(adress_wallet))
     df = get_token_list_per_wallet(adress_wallet)
 
     self.do_process(dataframe=df, adress_wallet=adress_wallet)
 
-
-    # win = SecondWindow(title="CryptoGames")
-    # win.connect("destroy", Gtk.main_quit)
-    # print('Acionando do_process')
-    # win.do_process(dataframe=df, adress_wallet=adress_wallet)
-    # win.show_all()
-
-    # SecondWindow(title="CryptoGames").do_process(dataframe=df)
-
-
-# class SecondWindow(Gtk.ApplicationWindow):
-#   def __init__(self, *args, **kwargs):
-#     super().__init__(*args, **kwargs)
-
-#     self.set_default_size(500, 500)
-
   def do_process(self, dataframe, adress_wallet):
-    print('Entrou do_process')
-    print(self)
-
     win = Gtk.Window(title="CryptoGames")
     win.set_default_size(800, 600)
     win.connect("destroy", Gtk.main_quit)
     
     box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
-    label_adress_wallet = Gtk.Label(label = adress_wallet)
+    label_adress_wallet = Gtk.Label(label = f'Endereço da carteira: {adress_wallet}')
     label_dataframe = Gtk.Label(label = str(dataframe))
 
     box.pack_start(label_adress_wallet, True, True, 0)
@@ -72,26 +51,6 @@ class MainWindow(Gtk.ApplicationWindow):
 
     win.show_all()
     Gtk.main()
-
-    # self.box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-
-    # self.label = Gtk.Label(label = adress_wallet)
-    # self.box.pack_start(self.label, True, True, 0)
-      
-    # self.lst_box = Gtk.ListBox()
-    # self.box.pack_start(self.lst_box, False, True, 0)
-
-    # for value in dataframe.values:
-    #   label_text = f'{value[0]}, {value[1]}, {value[2]}'      
-
-    #   self.label = Gtk.Label(label = label_text)
-    #   self.box.pack_start(self.label, True, True, 0)
-
-    #   self.lst_box.insert(self.box, 0)
-    #   self.show_all()
-    #   print(f'{value[0]}, {value[1]}, {value[2]}')
-    
-    print('FIM')
 
 
 class Application(Gtk.Application):
